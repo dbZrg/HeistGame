@@ -13,7 +13,7 @@ import com.db.heistgame.model.Member;
 public interface MemberRepo extends CrudRepository<Member, Long> {
 	boolean existsByEmailIgnoreCase(@Param("email")String email);
 	Member findById(@Param("id")long id);
-	Member findByName(@Param("name")String name);
+	List<Member> findByName(@Param("name")String name);
 
 	@Query("FROM Member AS mem LEFT JOIN mem.skills AS sk WHERE (mem.status = 'AVAILABLE' OR mem.status= 'RETIRED') AND sk.name = ?1 AND LENGTH(sk.level) >= ?2 AND mem.heist = NULL") 
     List<Member> findEliglibleMembers(String skillName, Integer level);

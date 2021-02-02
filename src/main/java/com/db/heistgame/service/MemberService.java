@@ -49,7 +49,7 @@ public class MemberService {
 			skill.setExp(0L);
 		}
 		
-		//emailSender.sendEmail(member.getEmail(), "Added as member", "You have been added as a member");
+		emailSender.sendEmail(member.getEmail(), "Added as member", "You have been added as a member");
 		return memberRepo.save(member);
 	}
 	

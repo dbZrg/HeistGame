@@ -37,8 +37,8 @@ public class StartHeistTask implements Runnable {
 	public void run() {
 		log.info("Task started");
 		
-		//String msg ="Heist started on : " +  heist.getStartTime().toLocalDateTime().toString(); 
-		//emailSender.sendEmails("Heist ended", msg , heist.getConfirmedMembers());
+		String msg ="Heist started on : " +  heist.getStartTime().toLocalDateTime().toString(); 
+		emailSender.sendEmails("Heist started", msg , heist.getConfirmedMembers());
 		
 		heist.setStatus(HeistStatus.IN_PROGRESS);
 		heistRepo.save(heist);		

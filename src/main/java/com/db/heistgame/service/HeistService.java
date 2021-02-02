@@ -154,26 +154,34 @@ public class HeistService {
 		}
 		
 		for (String name : memberNames) {
-			Member member = memberRepo.findByName(name);
+			List<Member> members = memberRepo.findByName(name);
 			
-			if(member == null) {
+			if(members == null || members.isEmpty()) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member dosnt exit");
 			}
-			if(member.getStatus() != StatusType.AVAILABLE && member.getStatus() != StatusType.RETIRED) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member is not AVAILABLE or RETIRED");
-			}
-			if(member.getHeist() != null) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member is already on a heist");
-			}
-			if(!helper.hasRequriedSkill(member.getSkills(),heist.getSkills())) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member doesnt have required skills for heist");
+			
+			for (Member member : members) {
+				
+				if(member.getStatus() != StatusType.AVAILABLE && member.getStatus() != StatusType.RETIRED) {
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member is not AVAILABLE or RETIRED");
+				}
+				if(member.getHeist() != null) {
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member is already on a heist");
+				}
+				if(!helper.hasRequriedSkill(member.getSkills(),heist.getSkills())) {
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member doesnt have required skills for heist");
+				}
+				
+				confirmedMembers.add(member);		
+				member.setHeist(heist);
 			}
 			
-			confirmedMembers.add(member);		
-			member.setHeist(heist);
+			
+			
+			
 		}
 		
-		//emailSender.sendEmails("Confirmed for heist", "You have been confirmed to participate in heist", confirmedMembers);
+		emailSender.sendEmails("Confirmed for heist", "You have been confirmed to participate in heist", confirmedMembers);
 		heist.setConfirmedMembers(confirmedMembers);
 		heist.setStatus(HeistStatus.READY);
 		heistRepo.save(heist);

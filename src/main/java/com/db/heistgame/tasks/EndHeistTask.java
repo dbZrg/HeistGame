@@ -88,8 +88,8 @@ public class EndHeistTask implements Runnable {
 			memberRepo.save(member);
 		}
 		
-		//String msg ="Outcome of heist : " +  heist.getOutcome().toString(); 
-		//emailSender.sendEmails("Heist ended",msg, heist.getConfirmedMembers());
+		String msg ="Outcome of heist : " +  heist.getOutcome().toString(); 
+		emailSender.sendEmails("Heist ended",msg, heist.getConfirmedMembers());
 		
 		heist.setStatus(HeistStatus.FINISHED);
 		heist.setConfirmedMembers(null);
