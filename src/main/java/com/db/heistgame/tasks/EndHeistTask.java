@@ -100,7 +100,7 @@ public class EndHeistTask implements Runnable {
 	
 	public void updateMembers(Heist heist, String type, boolean onlyIncarcerated) {
 		
-		int portionToUpdate = 0;
+		float portionToUpdate = 0;
 		switch (type) {
 		case "ALL":
 			portionToUpdate = 1;
@@ -116,7 +116,7 @@ public class EndHeistTask implements Runnable {
 		}
 			
 		List<Member> members = heist.getConfirmedMembers();
-		int numOfMemToUpdate =  members.size() * portionToUpdate;
+		int numOfMemToUpdate = (int)(members.size() * portionToUpdate);
 		Collections.shuffle(members);
 		
 		for(int i = 0 ; i < numOfMemToUpdate; i++) {

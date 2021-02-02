@@ -63,7 +63,7 @@ public class HeistController {
 		
 		String location = UriComponentsBuilder
 				.newInstance()
-                .path("/heist/{id}/skills")
+				.path("/heist/{id}/skills")
                 .buildAndExpand(id)
                 .toString();
 
