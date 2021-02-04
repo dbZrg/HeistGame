@@ -44,13 +44,14 @@ public class Skill {
 	}
 	
 	public void addExp(Long seconds, Long toLevel) {
-		exp = exp + seconds;
-		if(exp > toLevel && level.length()<10) {
-			level = level.concat("*");
-			exp = exp % toLevel;
-		}
-	}
 
+		exp = exp + seconds;
+		while(exp > toLevel && level.length()<10) {
+			level = level.concat("*");
+			exp = exp - toLevel;
+	}
+	
+	}
 	
 
 	

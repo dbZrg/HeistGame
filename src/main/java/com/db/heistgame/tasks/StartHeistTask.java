@@ -1,5 +1,7 @@
 package com.db.heistgame.tasks;
 
+import java.time.ZoneOffset;
+
 import javax.transaction.Transactional;
 
 import com.db.heistgame.enums.HeistStatus;
@@ -36,9 +38,7 @@ public class StartHeistTask implements Runnable {
 	@Override
 	public void run() {
 		log.info("Task started");
-		
-		String msg ="Heist started on : " +  heist.getStartTime().toLocalDateTime().toString(); 
-		emailSender.sendEmails("Heist started", msg , heist.getConfirmedMembers());
+		emailSender.sendEmails("Heist started", "Heist started" , heist.getConfirmedMembers());
 		
 		heist.setStatus(HeistStatus.IN_PROGRESS);
 		heistRepo.save(heist);		

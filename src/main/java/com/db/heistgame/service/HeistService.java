@@ -78,6 +78,8 @@ public class HeistService {
 			skill.setHeist(heist);
 		}
 		heist.setStatus(HeistStatus.PLANNING);
+		heist.setStartTime(heist.getStartTime().minusHours(1));
+		heist.setEndTime(heist.getEndTime().minusHours(1));
 		heistRepo.save(heist);
 
 		return heist;
@@ -186,12 +188,14 @@ public class HeistService {
 		heist.setStatus(HeistStatus.READY);
 		heistRepo.save(heist);
 		
+		
+		//start tasks after members confirmation
 		ScheduledExecutorService service = Executors.newScheduledThreadPool(10);
 
-		long startIn = heist.getStartTime().toInstant().toEpochMilli() - 3600000 - ZonedDateTime.now().toInstant().toEpochMilli();
+		long startIn = heist.getStartTime().toInstant().toEpochMilli() - ZonedDateTime.now().toInstant().toEpochMilli();
 		service.schedule(new StartHeistTask(heistRepo, heist, emailSender), startIn, TimeUnit.MILLISECONDS);
 		
-		long stopIn = heist.getEndTime().toInstant().toEpochMilli() -  3600000 - ZonedDateTime.now().toInstant().toEpochMilli();
+		long stopIn = heist.getEndTime().toInstant().toEpochMilli() - ZonedDateTime.now().toInstant().toEpochMilli();
 		service.schedule(new EndHeistTask(heistRepo,memberRepo, heist, secondsToLevel, emailSender), stopIn, TimeUnit.MILLISECONDS);
 		
 		return heist;

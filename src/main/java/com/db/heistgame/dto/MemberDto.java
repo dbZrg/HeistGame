@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MemberDto {
-	
+		
 	@NotNull
 	@JsonView({View.EligibleMembers.class,View.HeistMembers.class})
 	private String name;
